@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Maps</title>
+    <link rel="stylesheet" href="maps.css">
+</head>
+
+<body>
+    <div class="maps_container">
+        <div class="side_nav">
+            <div class="side_nav_container">
+                <div class="logo"> <img src="images/earthlogo.png"> </div>
+                <ul>
+                    <li><a href="#"><img src="images/gps.png"></a></li>
+                    <li><a href="#"><img src="images/machinery.png"></a></li>
+                    <li><a href="#"><img src="images/analytics.png"></a></li>
+
+                    <li><button id="button1" onclick="button1Click()">Button 1</button></li>
+                    <li><label id="labelA"> </label>></li>
+                    <li><label id="labelB"> </label>></li>
+                    <!--  <li><button id="button2" onclick="button2Click()">Button 2</button></li> -->
+
+                    <li><button id="clearALL" onclick="clearvalues()">RESET</button></li>
+
+
+                </ul>
+            </div>
+        </div>
+        <div class="main">
+            <div class="map" id="map"></div>
+        </div>
+
+        <script>
+            let map;
+            let marker; // Declare marker as a global variable
+            let isListening1 = false;
+            let isListening2 = false;
+            let clickListener1;
+            let clickListener2;
+            let a = true;
+            var final_A = { lat: null, lng: null };
+
+            var final_B = { lat: null, lng: null };
+
+
+            function button1Click() {
+
+                clickListener1 = map.addListener('click', function (event) {
+                    const clickedLocation = event.latLng;
+                    var latitude = clickedLocation.lat();
+                    var longitude = clickedLocation.lng();
+
+                    const confirmDialog = confirm(`Latitude: ${latitude}\nLongitude: ${longitude}\n\nDo you want to proceed for A ?`);
+                    if (confirmDialog) {
+                        final_A.lat = latitude;
+                        final_A.lng = longitude;
+                        const coordinatesLabel = document.getElementById('labelA');
+                        coordinatesLabel.textContent = `Latitude: ${final_A.lat}, Longitude: ${final_A.lng}`;
+
+                        google.maps.event.removeListener(clickListener1);
+                        isListening1 = false;
+
+                        button2Click();
+
+
+                    }
+                    else {
+                        latitude = null;
+                        longitude = null;
+
+                    }
+
+                });
+
+            }
+
+            function button2Click() {
+
+                clickListener2 = map.addListener('click', function (event) {
+                    const clickedLocation = event.latLng;
+                    var latitude = clickedLocation.lat();
+                    var longitude = clickedLocation.lng();
+
+                    const confirmDialog = confirm(`Latitude: ${latitude}\nLongitude: ${longitude}\n\nDo you want to proceed for B ?`);
+                    if (confirmDialog) {
+                        final_B.lat = latitude;
+                        final_B.lng = longitude;
+                        const coordinatesLabel = document.getElementById('labelB');
+                        coordinatesLabel.textContent = `Latitude: ${final_B.lat}, Longitude: ${final_B.lng}`;
+
+                        google.maps.event.removeListener(clickListener2);
+                        isListening2 = false;
+
+                    }
+                    else {
+                        latitude = null;
+                        longitude = null;
+
+                    }
+                    //mapClickListenerEnabled = false;
+                });
+                isListening2 = true;
+
+            }
+            function clearvalues() {
+                const coordinatesLabel = document.getElementById('labelA');
+                coordinatesLabel.textContent = ''; // Clears the content of the label
+                const coordinatesLabel2 = document.getElementById('labelB');
+                coordinatesLabel2.textContent = ''; // Clears the content of the label
+
+            }
+
+            function initMap() {
+                const position = { lat: 40.83272, lng: -96.66927 };
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 18,
+                    center: position,
+                    mapTypeId: "satellite",
+                });
+
+                // Initialize the marker
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: "Splinter Laboratory",
+                });
+
+                // Simulate receiving live GPS updates (replace with actual server updates)
+                setInterval(() => {
+                    const newLat = 40.83279; // Get new latitude from server
+                    const newLng = -96.66929; // Get new longitude from server
+                    updateMap(newLat, newLng);
+                }, 2000); // Update every 5 seconds (adjust as needed)
+            }
+
+            function updateMap(latitude, longitude) {
+                const newLocation = new google.maps.LatLng(latitude, longitude);
+
+                // Update the map marker position
+                if (marker) {
+                    marker.setPosition(newLocation);
+                } else {
+                    marker = new google.maps.Marker({
+                        position: newLocation,
+                        map: map
+                    });
+                }
+
+                // Center the map on the updated location
+                //map.setCenter(newLocation);
+            }
+
+            initMap();
+        </script>
+
+        
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0AtD1_YAYUguJlQn4gUUwkEnY_BGXwXs&callback=initMap"
+            async defer></script>
+    </div>
+</body>
+
+</html>
