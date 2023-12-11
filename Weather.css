@@ -7,59 +7,147 @@
 
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     position: relative;
+    background: linear-gradient(to right bottom, #87CEEB, #C0C0C0);
 }
 
 .weather_container{
-    height: 100%;
-    width: 100%;
+    min-height: 100vh;
+    width: 100vw;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 10%;
 }
 
-.weather_container h1{
-    font-size: calc(2vh + 2vw);
-    /*background-color: blanchedalmond;*/
+.side_nav{
+    height: 150px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: #1E90FF;
+    /*box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+    background: linear-gradient(to rightbottom, #FFD700, #FF6347);
+}
+
+.side_nav_container{
+    height: 65%;
+    width: 99%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    /*background-color: bisque;*/
+}
+
+.side_nav_container .logo{
+    position: absolute;
+    left: 2%;
+}
+
+.side_nav_container .logo img{
+    
+    width: calc(5vw);
+}
+
+.side_nav_container p{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 10px 0px;
+    font-size: calc(0.5vh + 2vw);
+    letter-spacing: 5px;
+    word-spacing: 6px;
 }
 
 .weather_container .cards_container{
+    height: 80%;
+    width: 100%;
     position: relative;
-    height: 70vh;
     display: flex;
     justify-content: flex-start;
-    align-self: flex-start;
-    overflow: scroll;
+    align-items: center;
+    margin-top: 20px;
+    overflow-x: scroll;
     /*background-color: rgb(27, 176, 141);*/
 }
 
 .weather_container .cards_container .cards{
-    height: 500px;
-    width: 400px;
+    height: 800px;
+    min-width: 400px;
+    position: relative;
     margin-left: 20px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    padding-top: 1%;
+    padding-top: 2%;
     border-radius: 2rem;
-    box-shadow: 0px 0px 10px solid black;
+    box-shadow: 0px 0px 10px  #87CEEB;
     color: white;
-    background-color: rgb(0, 73, 128);
+    background: linear-gradient(to bottom, #87CEEB, #1E90FF);
 }
 
-.cards_container .cards h2{
-    font-size: 30px;
-    margin-bottom: 5px;
+.cards_container .cards .upper{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0px;
+    /*background-color: red;*/
+}
+
+.upper .day{
+    font-size: 40px;
+    text-transform: uppercase;
+}
+
+.upper .month{
+    height: 30px;
+    text-align: center;
+    font-size: 25px;
+    margin-top: 10px;
+    /*background-color: rgb(33, 33, 29);*/
+}
+
+.upper .temp{
+    height: 50px;
+    font-size: 40px;
+    margin-top: 10px;
+    /*background-color: blue;*/
+}
+
+.upper .desc{
+    height: 50px;
+    margin-top: 0px;
+    /*background-color: aquamarine;*/
+    font-size: 25px;
+    
+}
+
+.upper .HL{
+    height: 50px;
+    margin-top: 10px;
+    /*background-color: rgb(255, 127, 236);*/
+    font-size: 20px;
+    
+}
+.cards_container.cards .lower{
+    position: relative;
+    background-color: blue;
 }
 
 .cards_container .cards ul{
     margin-top: 20%;    
+    text-align: left;
     /*background-color: blueviolet;*/
 }
 
@@ -69,4 +157,78 @@ body {
     margin-bottom: 10px;
 }
 
-  
+.cards_container .cards .footer{
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    gap: 50px;
+    top: 590px;
+    /*background-color: bisque;*/
+}
+
+.sun{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    font-size: 25px;
+}
+
+.srise {
+    width: 20px;
+    height: 20px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    
+    left: 20%;
+    animation: sunrise 2s ease-in-out infinite;
+}
+
+@keyframes sunrise {
+    0% {
+        background-color: #FFD700;
+        box-shadow: 0 0 2px 2px yellow;
+        transform: translate(-50%, 100%);
+    }
+    50% {
+        background-color: #FFD700;
+        box-shadow: 0 0 10px 5px yellow;
+    }
+    100% {
+        background-color: #FFD700;
+        box-shadow: 0 0 20px 10px yellow;
+        transform: translate(-50%, 0%);
+    }
+}
+
+.sset {
+    width: 20px;
+    height: 20px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    
+    bottom: 10;
+    left: 80%;
+    animation: sunset 2s ease-in-out infinite;
+}
+
+@keyframes sunset {
+    0% {
+        background-color: #FFD700;
+        box-shadow: 0 0 20px 10px yellow;
+        transform: translate(-50%, -100%);
+    }
+    50% {
+        background-color: #FFD700;
+        box-shadow: 0 0 10px 5px yellow;
+    }
+    100% {
+        background-color: #FFD700;
+        box-shadow: 0 0 2px 2px yellow;
+        transform: translate(-50%, 0%);
+    }
+}
