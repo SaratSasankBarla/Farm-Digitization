@@ -5,14 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Information</title>
-    <link rel="stylesheet" href="Weather.css">
+    <link rel="stylesheet" href="CSS/Weather.css">
 </head>
 
 <body>
     <div class="weather_container">
-        <h1>Weather Forecast for Lincoln coming 7 Days</h1>
+        <div class="side_nav">
+            <div class="side_nav_container">
+                <div class="logo"> <a href="index.html"><img src="images/earthlogo.png"> </a></div>
+                <p> WEATHER FORECAST</p>
+            </div>
+        </div>
         <div class="cards_container">
-
         </div>
     </div>
 
@@ -55,23 +59,77 @@
                     const cards_container = document.querySelector('.cards_container');
                     // const weatherInfoContainer = document.createElement('div');
 
-                    extractedData.forEach(day => {
+                    extractedData.forEach((day, index) => {
+                        // Parse datetime string into a Date object
+                        const dateObj = new Date(day.datetime);
+                        console.log("dateObj is: ", dateObj);
+
+                        // Array of day names
+                        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        const monthsOfYear = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+                        let dayLabel;
+                        if (index === 0) {
+                            dayLabel = 'Today';
+                        } else if (index === 1) {
+                            dayLabel = 'Tomorrow';
+                        } else {
+                            dayLabel = daysOfWeek[dateObj.getDay()];
+                        }
+                        console.log("month is: ", monthsOfYear[dateObj.getMonth()]);
+
                         const cards = document.createElement('div');
                         cards.className = 'cards';
+
+                        const conditionImageMap = {
+                            'Clear': 'images/Sun.png',
+                            'Partially cloudy': 'images/Sun&Clouds.png',
+                            'Rain': 'images/RainyClouds.png',
+                            'Snow, Rain, Partially cloudy': 'images/snow.png',
+                            'Snow': 'images/snow.png', 
+                            // Add more conditions and corresponding image URLs as needed
+                        };
+
+                        // Assuming day.conditions is a string representing the weather condition
+                        const condition = day.conditions;
+
+                        // Get the image URL based on the condition or provide a default URL
+                        const imageUrl = conditionImageMap[condition] || 'weather_images/default.png';
+
                         cards.innerHTML = `
-                    <h2>${day.datetime}</h2>
-                    <h1>${day.temp} ° </h1>
-                    <h2>${day.conditions}</h2>
-                    <p>H: ${day.tempmax}° | L: ${day.tempmin}</p>
-                    <ul>
-                        <li>Feels Like: ${day.feelslike}</li>
-                        <li>Wind Speed: ${day.windspeed}</li>
-                        <li>Humidity: ${day.humidity}</li>
-                        <li>Precipitation: ${day.precip}</li>
-                        <li>Dew: ${day.dew}</li>
-                
-                    </ul>
-                `;
+                            <div class="upper">
+                                <div class="day"> ${dayLabel}</div>
+                                <div class="month">${monthsOfYear[dateObj.getMonth()]}  ${dateObj.getDate()}</h3>
+                                <div class="temp">${day.temp} °F </h1><br>
+                                <img src="${imageUrl}" style="max-width:70px"/>
+                                <div class="desc">${day.conditions}</h2>
+                                <div class="HL">H: ${day.tempmax}  |  L: ${day.tempmin}</p>
+                            </div>
+                            <div class="lower">
+                                <ul>
+                                    <li>Feels Like: ${day.feelslike} °F</li>
+                                    <li>Wind Speed: ${day.windspeed} mph</li>
+                                    <li>Humidity: ${day.humidity}%</li>
+                                    <li>Precipitation: ${day.precip} in</li>
+                                    <li>Dew: ${day.dew} °F</li>
+                                    <li>UV index: ${day.uvindex} </li>
+                            
+                                </ul>
+                            </div>
+                            <div class="footer">
+                                <div class="sun">
+                                    <div class="srise"></div>
+                                    
+                                    <p>${day.sunrise}</p>
+                                </div>
+                                <div class="sun">
+                                    <div class="sset"></div>
+                                    
+                                    <p>${day.sunset}</p>
+                                </div>
+                            </div>                            
+                        `;
+
                         cards_container.appendChild(cards);
                     });
 
@@ -82,6 +140,51 @@
                     // Handle errors appropriately
                 });
         });
+    </script>
+    <script>
+        // Function to create an SVG element with an adjusted parabola
+        function createAdjustedParabolaSVG() {
+            const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svgElement.setAttribute("width", "400");
+            svgElement.setAttribute("height", "400");
+
+            // Draw the adjusted parabola using the path element
+            const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            pathElement.setAttribute("d", "M450.7 200 Q 720 50, 1020.08 200");
+            pathElement.setAttribute("stroke", "black");
+            pathElement.setAttribute("fill", "none");
+
+            svgElement.appendChild(pathElement);
+
+            // Draw the scale below the parabola
+            const lineElement = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            lineElement.setAttribute("x1", "0");
+            lineElement.setAttribute("y1", "200");
+            lineElement.setAttribute("x2", "1400");
+            lineElement.setAttribute("y2", "200");
+            lineElement.setAttribute("stroke", "black");
+
+            svgElement.appendChild(lineElement);
+
+            // Add text labels for the scale
+            const labels = ["0", "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24"];
+            for (let i = 0; i < labels.length; i++) {
+                const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                textElement.setAttribute("x", i * 120);
+                textElement.setAttribute("y", "240");
+                textElement.textContent = labels[i];
+
+                svgElement.appendChild(textElement);
+            }
+
+            // Serialize the SVG element to a string
+            const svgString = new XMLSerializer().serializeToString(svgElement);
+
+            return svgString;
+        }
+
+        // Call the createAdjustedParabolaSVG function when the window loads
+
     </script>
 </body>
 
